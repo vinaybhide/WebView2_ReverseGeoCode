@@ -1,0 +1,32 @@
+{
+  "place_id": 213860679,
+  "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+  "osm_type": "way",
+  "osm_id": 209748929,
+  "lat": "18.486335333692576",
+  "lon": "73.80861214356602",
+  "class": "highway",
+  "type": "residential",
+  "place_rank": 26,
+  "importance": 0.10000999999999993,
+  "addresstype": "road",
+  "name": "",
+  "display_name": "Mavale vasti, Warje, Pune, पुणे, Maharashtra, 411058, India",
+  "address": {
+    "neighbourhood": "Mavale vasti",
+    "suburb": "Warje",
+    "city": "Pune",
+    "state_district": "पुणे",
+    "state": "Maharashtra",
+    "ISO3166-2-lvl4": "IN-MH",
+    "postcode": "411058",
+    "country": "India",
+    "country_code": "in"
+  },
+  "boundingbox": [
+    "18.4842574",
+    "18.4871532",
+    "73.8067875",
+    "73.8101645"
+  ]
+}
