@@ -52,6 +52,12 @@
             this.btnSearchMapLatLong = new System.Windows.Forms.Button();
             this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tbFoundAddress = new System.Windows.Forms.TextBox();
+            this.tbFoundLat = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tbFoundLong = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -156,7 +162,7 @@
             // 
             // txtStreet
             // 
-            this.txtStreet.Location = new System.Drawing.Point(74, 162);
+            this.txtStreet.Location = new System.Drawing.Point(83, 337);
             this.txtStreet.Name = "txtStreet";
             this.txtStreet.Size = new System.Drawing.Size(179, 26);
             this.txtStreet.TabIndex = 11;
@@ -164,7 +170,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 163);
+            this.label5.Location = new System.Drawing.Point(19, 338);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(57, 20);
             this.label5.TabIndex = 10;
@@ -172,7 +178,7 @@
             // 
             // txtCity
             // 
-            this.txtCity.Location = new System.Drawing.Point(74, 194);
+            this.txtCity.Location = new System.Drawing.Point(83, 369);
             this.txtCity.Name = "txtCity";
             this.txtCity.Size = new System.Drawing.Size(179, 26);
             this.txtCity.TabIndex = 13;
@@ -180,7 +186,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(25, 197);
+            this.label6.Location = new System.Drawing.Point(34, 372);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(39, 20);
             this.label6.TabIndex = 12;
@@ -188,7 +194,7 @@
             // 
             // txtState
             // 
-            this.txtState.Location = new System.Drawing.Point(74, 226);
+            this.txtState.Location = new System.Drawing.Point(83, 401);
             this.txtState.Name = "txtState";
             this.txtState.Size = new System.Drawing.Size(179, 26);
             this.txtState.TabIndex = 15;
@@ -196,7 +202,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 227);
+            this.label7.Location = new System.Drawing.Point(19, 402);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(52, 20);
             this.label7.TabIndex = 14;
@@ -204,7 +210,7 @@
             // 
             // txtPostalCode
             // 
-            this.txtPostalCode.Location = new System.Drawing.Point(115, 258);
+            this.txtPostalCode.Location = new System.Drawing.Point(124, 433);
             this.txtPostalCode.Name = "txtPostalCode";
             this.txtPostalCode.Size = new System.Drawing.Size(138, 26);
             this.txtPostalCode.TabIndex = 17;
@@ -212,7 +218,7 @@
             // lblpostalcode
             // 
             this.lblpostalcode.AutoSize = true;
-            this.lblpostalcode.Location = new System.Drawing.Point(10, 258);
+            this.lblpostalcode.Location = new System.Drawing.Point(19, 433);
             this.lblpostalcode.Name = "lblpostalcode";
             this.lblpostalcode.Size = new System.Drawing.Size(99, 20);
             this.lblpostalcode.TabIndex = 16;
@@ -229,6 +235,12 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.tbFoundLong);
+            this.splitContainer2.Panel1.Controls.Add(this.label10);
+            this.splitContainer2.Panel1.Controls.Add(this.tbFoundLat);
+            this.splitContainer2.Panel1.Controls.Add(this.label9);
+            this.splitContainer2.Panel1.Controls.Add(this.tbFoundAddress);
+            this.splitContainer2.Panel1.Controls.Add(this.label8);
             this.splitContainer2.Panel1.Controls.Add(this.btnSearchMapAddress);
             this.splitContainer2.Panel1.Controls.Add(this.txtPostalCode);
             this.splitContainer2.Panel1.Controls.Add(this.lblpostalcode);
@@ -253,7 +265,7 @@
             // 
             // btnSearchMapAddress
             // 
-            this.btnSearchMapAddress.Location = new System.Drawing.Point(33, 300);
+            this.btnSearchMapAddress.Location = new System.Drawing.Point(42, 475);
             this.btnSearchMapAddress.Name = "btnSearchMapAddress";
             this.btnSearchMapAddress.Size = new System.Drawing.Size(194, 55);
             this.btnSearchMapAddress.TabIndex = 18;
@@ -300,6 +312,56 @@
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(14, 164);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(117, 20);
+            this.label8.TabIndex = 19;
+            this.label8.Text = "Address found:";
+            // 
+            // tbFoundAddress
+            // 
+            this.tbFoundAddress.Location = new System.Drawing.Point(18, 198);
+            this.tbFoundAddress.Multiline = true;
+            this.tbFoundAddress.Name = "tbFoundAddress";
+            this.tbFoundAddress.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tbFoundAddress.Size = new System.Drawing.Size(244, 116);
+            this.tbFoundAddress.TabIndex = 20;
+            // 
+            // tbFoundLat
+            // 
+            this.tbFoundLat.Location = new System.Drawing.Point(23, 560);
+            this.tbFoundLat.Name = "tbFoundLat";
+            this.tbFoundLat.Size = new System.Drawing.Size(179, 26);
+            this.tbFoundLat.TabIndex = 22;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(19, 537);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(121, 20);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Found Latitude:";
+            // 
+            // tbFoundLong
+            // 
+            this.tbFoundLong.Location = new System.Drawing.Point(23, 616);
+            this.tbFoundLong.Name = "tbFoundLong";
+            this.tbFoundLong.Size = new System.Drawing.Size(179, 26);
+            this.tbFoundLong.TabIndex = 24;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(19, 593);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(134, 20);
+            this.label10.TabIndex = 23;
+            this.label10.Text = "Found Longitude:";
             // 
             // mainForm
             // 
@@ -353,6 +415,12 @@
         private System.Windows.Forms.Button btnSearchMapAddress;
         private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox tbFoundAddress;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tbFoundLong;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox tbFoundLat;
+        private System.Windows.Forms.Label label9;
     }
 }
 

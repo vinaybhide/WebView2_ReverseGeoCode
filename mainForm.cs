@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using static System.Windows.Forms.AxHost;
 
 namespace ReverseGeoCode
@@ -29,6 +30,7 @@ namespace ReverseGeoCode
         //state state
         //country country
         //postalcode postal code
+
         public mainForm()
         {
             InitializeComponent();
@@ -85,7 +87,7 @@ namespace ReverseGeoCode
             {
                 StringBuilder queryAddress = new StringBuilder();
                 queryAddress.Append("http://maps.google.com/maps?q=");
-                if(string.IsNullOrEmpty(street) == false)
+                if (string.IsNullOrEmpty(street) == false)
                 {
                     queryAddress.Append(street + "," + "+");
                 }
@@ -102,12 +104,90 @@ namespace ReverseGeoCode
                     queryAddress.Append(postalCode);// + "," + "+");
                 }
                 webView21.CoreWebView2.Navigate(queryAddress.ToString());
+
+                WebClient webClient = new WebClient();
+                webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                webClient.Headers.Add("Referer", "http://www.microsoft.com");
+                var jsonData = webClient.DownloadString(queryAddress.ToString());
+                int startScriptIndex = jsonData.IndexOf("<script nonce=", 0) + "<script nonce=".Length;
+                int endScriptIndex = jsonData.IndexOf("</script>", startScriptIndex);
+                string scriptNodeText = jsonData.Substring(startScriptIndex, endScriptIndex - startScriptIndex);
+                //XmlDocument xmlDocument = new XmlDocument();
+                //xmlDocument.LoadXml(jsonData);
+                //XmlNodeList scriptNodeList = xmlDocument.GetElementsByTagName("script");
+                //XmlNode firstScriptNode = scriptNodeList[0];
+                //string scriptNodeText = firstScriptNode.InnerText;
+                string[] scriptNodeTextArray = scriptNodeText.Split(new char[] { '[', '[' });
+                string foundLatLongLine = string.Empty;
+                string[] foundLatLongLineArray;
+                tbFoundLat.Text = string.Empty;
+                tbFoundLong.Text = string.Empty;
+
+                if (scriptNodeTextArray.Length >= 205)
+                {
+                    if(FindLatLongFromOutput(scriptNodeTextArray, 205, 2, 3) == false)
+                    {
+                        if (scriptNodeTextArray.Length >= 208)
+                        {
+                            if (FindLatLongFromOutput(scriptNodeTextArray, 208, 2, 3) == false)
+                            {
+                                tbFoundLat.Text = "Not Found";
+                                tbFoundLong.Text = "Not Found";
+                            }
+
+                        }
+                    }
+                }
+                //StringBuilder sb = new StringBuilder();
+                //for (int i = 0; i < scriptNodeTextArray.Length; i++)
+                //{
+                //    sb.AppendLine("counter= " + i.ToString() + "value= " + scriptNodeTextArray[i]);
+                //}
+                //if (sb.Length > 0)
+                //{
+                //    File.WriteAllText(AppContext.BaseDirectory + "log.txt", sb.ToString());
+                //}
+                //Source address
+                //counter= 105value= \"Gharonda Gulmohar Path, Pune, Maharashtra, 411004\",null,null,
+                //lat long for address searched
+                //DO not use counter = 81, 107,223,238,258,273,286,301,330,341,356,267,412,416,420,424,428,432,436
+                //  440,447,475,490,512, 516
+                //USE counter = 205 to get lat lon
+                //counter= 205value= null,null,18.510616499999998,73.8289028],\"0x3bc2bf91f3a4d345:0x3a15faa4bacb5af3\",\"Gharonda Apartment\",null,
+                //OR Use counter = 249 to get lat lon
+                //counter= 249value= 1,0]],1,null,0,0]],null,\"Gulmohar Path, Erandwana, Gokhalenagar, Pune, Maharashtra 411004\",null,null,\"https://www.google.com/maps/preview/place/Gharonda+Apartment,+Gulmohar+Path,+Erandwana,+Gokhalenagar,+Pune,+Maharashtra+411004/@18.5106165,73.8289028,3783a,13.1y/data\\u003d!4m2!3m1!1s0x3bc2bf91f3a4d345:0x3a15faa4bacb5af3\",1,null,null,null,null,null,null,null,null,
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message.ToString(), "Error");
             }
         }
 
+        public bool FindLatLongFromOutput(string[] sourceArray, int targetindex, int latIndex, int longIndex)
+        {
+            bool bfound = false;
+            string foundLatLongLine = sourceArray[targetindex];
+            string[] foundLatLongLineArray = foundLatLongLine.Split(new char[] { ',' });
+
+            for (int i = 0; i < foundLatLongLineArray.Length; i++)
+            {
+                if ((foundLatLongLineArray[i].Contains("null") == true) || (string.IsNullOrEmpty(foundLatLongLineArray[i])))
+                {
+                    continue;
+                }
+                else
+                {
+                    bfound = true;
+                    break;
+                }
+            }
+            if (bfound == true)
+            {
+                tbFoundLat.Text = foundLatLongLineArray[latIndex].Trim(new char[] { ']' });
+                tbFoundLong.Text = foundLatLongLineArray[longIndex].Trim(new char[] { ']' });
+            }
+            return bfound;
+        }
         public static void EnsureBrowserEmulationEnabled(string exename = "ReverseGeoCode.exe", bool uninstall = false)
         {
 
@@ -139,13 +219,68 @@ namespace ReverseGeoCode
             string lon = txtLonMap.Text;
             try
             {
-                if((string.IsNullOrEmpty(lat) == false) && (string.IsNullOrEmpty(lon) == false))
+                if ((string.IsNullOrEmpty(lat) == false) && (string.IsNullOrEmpty(lon) == false))
                 {
                     StringBuilder queryAddress = new StringBuilder();
                     queryAddress.Append("http://maps.google.com/maps?q=");
                     queryAddress.Append(lat + "," + "+");
                     queryAddress.Append(lon);
                     webView21.CoreWebView2.Navigate(queryAddress.ToString());
+
+                    WebClient webClient = new WebClient();
+                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                    webClient.Headers.Add("Referer", "http://www.microsoft.com");
+                    var jsonData = webClient.DownloadString(queryAddress.ToString());
+                    int startScriptIndex = jsonData.IndexOf("<script nonce=", 0) + "<script nonce=".Length;
+                    int endScriptIndex = jsonData.IndexOf("</script>", startScriptIndex);
+                    string scriptNodeText = jsonData.Substring(startScriptIndex, endScriptIndex - startScriptIndex);
+                    //XmlDocument xmlDocument = new XmlDocument();
+                    //xmlDocument.LoadXml(jsonData);
+                    //XmlNodeList scriptNodeList = xmlDocument.GetElementsByTagName("script");
+                    //XmlNode firstScriptNode = scriptNodeList[0];
+                    //string scriptNodeText = firstScriptNode.InnerText;
+                    string[] scriptNodeTextArray = scriptNodeText.Split(new char[] { '[', '[' });
+                    string targetDetailLine = string.Empty;
+                    string foundMatchingAddress;
+                    if (scriptNodeTextArray.Length >= 225)
+                    {
+                        targetDetailLine = scriptNodeTextArray[225];
+
+                        int startAddIndex = -1;
+                        int endAddIndex = -1;
+
+                        tbFoundAddress.Text = "Not Found!";
+                        startAddIndex = targetDetailLine.IndexOf("\"", 0) + "\"".Length;
+                        if (startAddIndex >= 0)
+                        {
+                            endAddIndex = targetDetailLine.IndexOf("\\\"", startAddIndex);
+                            if (endAddIndex >= 0)
+                            {
+                                foundMatchingAddress = targetDetailLine.Substring(startAddIndex, endAddIndex - startAddIndex);
+                                tbFoundAddress.Text = foundMatchingAddress;
+                            }
+                        }
+
+                    }
+                    //StringBuilder sb = new StringBuilder();
+                    //for (int i = 0; i < scriptNodeTextArray.Length; i++)
+                    //{
+                    //    sb.AppendLine("counter= " + i.ToString() + "value= " + scriptNodeTextArray[i]);
+                    //}
+                    //if (sb.Length > 0)
+                    //{
+                    //    File.WriteAllText(AppContext.BaseDirectory + "log.txt", sb.ToString());
+                    //}
+                    //Source lat lon
+                    //counter= 105value= \"18.51081, 73.82893\",null,null,
+
+                    //DO not use counter = 81, 107,223,238,258,273,286,301,330,341,356,267,412,416,420,424,428,432,436
+                    //  440,447,475,490,512, 516
+                    //USE counter = 205 to get
+                    //counter= 205value= null,null,18.510616499999998,73.8289028],\"0x3bc2bf91f3a4d345:0x3a15faa4bacb5af3\",\"Gharonda Apartment\",null,
+                    //Use counter = 245
+                    //counter= 249value= 1,0]],1,null,0,0]],null,\"Gulmohar Path, Erandwana, Gokhalenagar, Pune, Maharashtra 411004\",null,null,\"https://www.google.com/maps/preview/place/Gharonda+Apartment,+Gulmohar+Path,+Erandwana,+Gokhalenagar,+Pune,+Maharashtra+411004/@18.5106165,73.8289028,3783a,13.1y/data\\u003d!4m2!3m1!1s0x3bc2bf91f3a4d345:0x3a15faa4bacb5af3\",1,null,null,null,null,null,null,null,null,
+
                 }
             }
             catch (Exception ex)
